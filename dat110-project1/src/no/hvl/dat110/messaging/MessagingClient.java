@@ -20,11 +20,11 @@ public class MessagingClient {
 		Socket clientSocket;
 		Connection connection = null;
 
-		// TODO
-		// create TCP socket for client and connection
-
-		if (true) {
-			throw new RuntimeException("not yet implemented");
+		try {
+			clientSocket = new Socket(server, port);
+			connection = new Connection(clientSocket);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return connection;
