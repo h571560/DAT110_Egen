@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
+
 public class Connection {
 
 	private DataOutputStream outStream; // for writing bytes to the TCP connection
@@ -30,23 +32,25 @@ public class Connection {
 
 	public void send(Message message) {
 
-		// TODO
 		// encapsulate the data contained in the message and write to the output stream
-
-		throw new RuntimeException("not yet implemented");
+		try {
+			outStream.write(message.encapsulate());			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	public Message receive() {
-
-		Message message;
-		byte[] recvbuf;
-
-		// TODO
 		// read a segment from the input stream and decapsulate into message
+		Message message = new Message();
+		byte[] recvbuf = new byte[MessageConfig.SEGMENTSIZE];
 
-		if (true) {
-			throw new RuntimeException("not yet implemented");
+		try {
+			inStream.read(recvbuf, 0, recvbuf.length);
+			message.decapsulate(recvbuf);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return message;
