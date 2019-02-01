@@ -1,52 +1,58 @@
 package no.hvl.dat110.rpc;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class RPCUtils {
 
 	public static byte[] marshallString(byte rpcid, String str) {
 
-		byte[] encoded;
+		int lengde = str.getBytes().length;
+		byte[] encoded = new byte[1 + lengde];
 
-		// TODO: marshall RPC identifier and string into byte array
+		try {
 
-		if (true) {
-			throw new RuntimeException("not yet implemented");
+			// marshall RPC identifier and string into byte array
+
+			encoded[0] = rpcid;
+			for (int i = 0; i < lengde; i++) {
+				encoded[i + 1] = str.getBytes()[i];
+			}
+
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
 
 		return encoded;
+
 	}
 
 	public static String unmarshallString(byte[] data) {
 
-		String decoded;
+		String decoded = "";
 
-		// TODO: unmarshall String contained in data into decoded
-
-		if (true) {
-			throw new RuntimeException("not yet implemented");
+		// unmarshall String contained in data into decoded
+		try {
+			decoded = new String(Arrays.copyOfRange(data, 1, data.length));
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
-
 		return decoded;
 	}
 
 	public static byte[] marshallVoid(byte rpcid) {
 
-		byte[] encoded;
-
-		// TODO: marshall RPC identifier in case of void type
-
-		if (true) {
-			throw new RuntimeException("not yet implemented");
-		}
+		// marshall RPC identifier in case of void type
+		byte[] encoded = new byte[1];
+		encoded[0] = rpcid;
 
 		return encoded;
-
 	}
 
 	public static void unmarshallVoid(byte[] data) {
 
-		// TODO: unmarshall void type
+		// unmarshall void type
+
 	}
 
 	public static byte[] marshallBoolean(byte rpcid, boolean b) {
@@ -71,29 +77,22 @@ public class RPCUtils {
 	}
 
 	public static byte[] marshallInteger(byte rpcid, int x) {
-
-		byte[] encoded;
-
-		// TODO: marshall RPC identifier and string into byte array
-
-		if (true) {
-			throw new RuntimeException("not yet implemented");
-		}
-
-		return encoded;
+		
+		// marshall RPC identifier and string into byte array
+			return new byte[] {
+				  rpcid,
+				  (byte) (x >> 24),
+				  (byte) (x >> 16),
+				  (byte) (x >> 8),
+				  (byte) (x >> 0)
+		};
+	
 	}
 
 	public static int unmarshallInteger(byte[] data) {
 
-		int decoded;
-
-		// TODO: unmarshall integer contained in data
-
-		if (true) {
-			throw new RuntimeException("not yet implemented");
-		}
-
-		return decoded;
+		// unmarshall integer contained in data
+		return ByteBuffer.wrap(Arrays.copyOfRange(data, 1, data.length)).getInt();
 
 	}
 }
